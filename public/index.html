@@ -19,7 +19,7 @@
 
 <style>
   :root {
-    /* Savanna-at-golden-hour palette — warm, alive, human */
+    /* Savanna-at-golden-hour palette - warm, alive, human */
     --sand: #fbf1e2;
     --sand-deep: #f3e3c9;
     --cream: #fffaf0;
@@ -31,7 +31,7 @@
     --sunset-deep: #e85d2b;
     --sun: #ffc857;          /* golden yellow accent */
     --acacia: #2f6b3f;       /* deep tree green */
-    --leaf: #4f9e5c;         /* fresh leaf green — primary accent */
+    --leaf: #4f9e5c;         /* fresh leaf green - primary accent */
     --leaf-dim: rgba(79,158,92,0.14);
     --earth: #c4552f;        /* red-earth / terracotta */
     --earth-dim: rgba(196,85,47,0.12);
@@ -343,7 +343,7 @@
     <div class="logo-mark">M</div>
     <div>
       <h1>MainAI</h1>
-      <div class="header-meta"><span class="status-dot"></span><span id="model-label">Poa &amp; ready · gemini-flash-latest</span></div>
+      <div class="header-meta"><span class="status-dot"></span><span id="model-label">Try Me</span></div>
     </div>
   </div>
   <button class="icon-btn" id="clear-btn" title="Futa (clear chat)">
@@ -354,8 +354,8 @@
 <div id="chat-container">
   <div id="empty-state">
     <div class="badge">🌍 Made in Nairobi, for the world</div>
-    <h2>Niaje! I'm <span>MainAI</span> 🌻</h2>
-    <p>Your homegrown AI buddy — ask me anything, drop some code, or tap a starter below. Karibu, let's chat.</p>
+    <h2>OYA! I'm <span>MainAI</span> 🌻</h2>
+    <p>Your home AI buddy - ask me anything, drop some code, or tap a starter below. Karibu, let's chat.</p>
     <div class="prompt-grid" id="prompt-grid">
       <div class="prompt-chip" data-prompt="Explain how a hash map works, with a simple analogy.">
         <span class="chip-emoji">🌳</span>
@@ -388,7 +388,7 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
     </button>
   </form>
-  <div class="footer-credit">Imetengenezwa Nairobi <span class="flag">🇰🇪</span> na kijana wa IT — built solo, with love, by a Kenyan IT enthusiast</div>
+  <div class="footer-credit">Imetengenezwa Nairobi <span class="flag">🇰🇪</span> na kijana wa IT - built solo, with love, by a Kenyan IT enthusiast</div>
 </footer>
 
 <div id="toast"></div>
@@ -451,7 +451,7 @@
         error: w.classList.contains("error-msg")
       }));
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch (e) { /* storage unavailable — fail silently */ }
+    } catch (e) { /* storage unavailable - fail silently */ }
   }
 
   function loadHistory() {
