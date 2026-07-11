@@ -1,0 +1,28 @@
+{
+  "name": "my-first-agent",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "agent": "tsx src/agent.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@langchain/anthropic": "^1.5.1",
+    "@langchain/core": "^1.2.2",
+    "@langchain/google-genai": "^2.2.0",
+    "@langchain/langgraph": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2"
+  }
+}
