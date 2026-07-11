@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { createReactAgent } from "@langchain/langgraph/prebuilt";
+import { MemorySaver } from "@langchain/langgraph";
 import { getWeather } from "./tools";
 
 const app = express();
@@ -15,9 +16,12 @@ const model = new ChatGoogleGenerativeAI({
   apiKey: process.env.GOOGLE_API_KEY,
 });
 
+const checkpointer = new MemorySaver();
+
 const agent = createReactAgent({
   llm: model,
   tools: [getWeather],
+  checkpointer,
 });
 
 app.post("/chat", async (req, res) => {
@@ -27,9 +31,10 @@ app.post("/chat", async (req, res) => {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    const result = await agent.invoke({
-      messages: [{ role: "user", content: message }],
-    });
+    const result = await agent.invoke(
+      { messages: [{ role: "user", content: message }] },
+      { configurable: { thread_id: "timmy-main-chat" } }
+    );
 
     const lastMessage = result.messages[result.messages.length - 1];
     res.json({ reply: lastMessage.content });
