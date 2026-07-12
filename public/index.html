@@ -5,44 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>MainAI</title>
 
-<!-- Fonts: Baloo 2 for warm, rounded display type; Nunito for friendly body text -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-<!-- Markdown + syntax highlighting -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
   :root {
-    /* Savanna-at-golden-hour palette - warm, alive, human */
     --sand: #fbf1e2;
     --sand-deep: #f3e3c9;
     --cream: #fffaf0;
-    --bark: #3a2c20;         /* warm near-black for text, not cold black */
+    --bark: #3a2c20;
     --bark-soft: #6b5a48;
     --muted: #9c8a74;
-
-    --sunset: #ff8a3d;       /* header gradient */
+    --sunset: #ff8a3d;
     --sunset-deep: #e85d2b;
-    --sun: #ffc857;          /* golden yellow accent */
-    --acacia: #2f6b3f;       /* deep tree green */
-    --leaf: #4f9e5c;         /* fresh leaf green - primary accent */
+    --sun: #ffc857;
+    --acacia: #2f6b3f;
+    --leaf: #4f9e5c;
     --leaf-dim: rgba(79,158,92,0.14);
-    --earth: #c4552f;        /* red-earth / terracotta */
+    --earth: #c4552f;
     --earth-dim: rgba(196,85,47,0.12);
-    --sky: #4fa3c4;          /* highland sky blue */
-
+    --sky: #4fa3c4;
     --line: #e9dcc2;
     --user-bubble: linear-gradient(135deg, #eaf6ec, #dcefe0);
     --agent-bubble: var(--cream);
     --danger: #d64545;
     --code-bg: #241b13;
-
     --radius-lg: 22px;
     --radius-md: 14px;
     --radius-sm: 9px;
@@ -64,7 +59,6 @@
     overflow: hidden;
   }
 
-  /* ---------- Signature: acacia-on-sunset header band ---------- */
   .savanna-band {
     position: relative;
     height: 64px;
@@ -127,6 +121,8 @@
     flex-shrink: 0;
   }
 
+  .header-right { display: flex; align-items: center; gap: 8px; }
+
   .icon-btn {
     background: var(--sand);
     border: 1px solid var(--line);
@@ -140,11 +136,9 @@
   .icon-btn:hover { border-color: var(--danger); color: var(--danger); background: #fbeaea; transform: rotate(-6deg); }
   .icon-btn svg { width: 15px; height: 15px; }
 
-  /* ---------- Chat area ---------- */
   #chat-container { flex: 1; overflow-y: auto; padding: 26px 16px 12px; background: var(--sand); }
   #chat { max-width: 740px; width: 100%; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 
-  /* ---------- Empty / welcome state ---------- */
   #empty-state { max-width: 620px; margin: 2vh auto 0; text-align: center; padding: 0 12px; }
 
   #empty-state .badge {
@@ -188,7 +182,6 @@
     text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 3px;
   }
 
-  /* ---------- Message bubbles ---------- */
   .msg-wrapper { display: flex; gap: 10px; width: 100%; }
   .msg-wrapper.user { flex-direction: row-reverse; }
 
@@ -253,7 +246,6 @@
   .action-btn:hover { color: var(--earth); background: var(--earth-dim); }
   .action-btn svg { width: 12px; height: 12px; }
 
-  /* ---------- Footer / input ---------- */
   footer { border-top: 1px solid var(--line); background: var(--cream); padding: 14px 24px 16px; flex-shrink: 0; }
   form { display: flex; gap: 10px; max-width: 740px; width: 100%; margin: 0 auto 10px; align-items: flex-end; }
 
@@ -287,14 +279,12 @@
   .footer-credit { text-align: center; font-size: 11.5px; color: var(--muted); max-width: 740px; margin: 0 auto; font-weight: 600; }
   .footer-credit .flag { letter-spacing: 1px; }
 
-  /* ---------- Typing indicator ---------- */
   .typing-indicator { display: flex; align-items: center; gap: 5px; padding: 4px 0; }
   .typing-indicator span { width: 6px; height: 6px; border-radius: 50%; display: inline-block; animation: bounce 1.3s infinite ease-in-out both; }
   .typing-indicator span:nth-child(1) { background: var(--earth); animation-delay: 0s; }
   .typing-indicator span:nth-child(2) { background: var(--sun); animation-delay: -0.18s; }
   .typing-indicator span:nth-child(3) { background: var(--leaf); animation-delay: -0.34s; }
 
-  /* ---------- Toast ---------- */
   #toast {
     position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%) translateY(10px);
     background: var(--acacia); color: #f5fff2; padding: 10px 18px; border-radius: 999px;
@@ -346,9 +336,14 @@
       <div class="header-meta"><span class="status-dot"></span><span id="model-label">Try Me</span></div>
     </div>
   </div>
-  <button class="icon-btn" id="clear-btn" title="Futa (clear chat)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
-  </button>
+  <div class="header-right">
+    <button class="icon-btn" id="logout-btn" title="Log out">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+    </button>
+    <button class="icon-btn" id="clear-btn" title="Clear view">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path></svg>
+    </button>
+  </div>
 </header>
 
 <div id="chat-container">
@@ -394,15 +389,29 @@
 <div id="toast"></div>
 
 <script>
+  // ---------- Auth setup ----------
+  const SUPABASE_URL = "https://nnbnvjbijoxazjugombn.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_C9XGdAGhv4FOgpyCzhZbsw_DcCTot6U";
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let accessToken = null;
+
+  // ---------- Element refs ----------
   const chatContainer = document.getElementById("chat-container");
   const chat = document.getElementById("chat");
   const emptyState = document.getElementById("empty-state");
   const form = document.getElementById("chat-form");
   const input = document.getElementById("input");
   const clearBtn = document.getElementById("clear-btn");
+  const logoutBtn = document.getElementById("logout-btn");
   const toast = document.getElementById("toast");
-  const STORAGE_KEY = "mainai_history_v2";
 
+  logoutBtn.addEventListener("click", async () => {
+    await client.auth.signOut();
+    window.location.href = "/login.html";
+  });
+
+  // ---------- Markdown / code highlighting ----------
   marked.setOptions({
     highlight: function (code, lang) {
       if (Prism.languages[lang]) return Prism.highlight(code, Prism.languages[lang], lang);
@@ -441,28 +450,25 @@
     emptyState.style.display = chat.children.length ? "none" : "block";
   }
 
-  function saveHistory() {
+  // ---------- Supabase-backed history ----------
+  async function loadHistoryFromServer() {
     try {
-      const items = [...chat.querySelectorAll(".msg-wrapper")].map(w => ({
-        role: w.classList.contains("user") ? "user" : "agent",
-        html: w.querySelector(".msg").innerHTML,
-        raw: w.dataset.raw || "",
-        time: w.dataset.time || formatTime(),
-        error: w.classList.contains("error-msg")
-      }));
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    } catch (e) { /* storage unavailable - fail silently */ }
-  }
-
-  function loadHistory() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const items = JSON.parse(raw);
-      items.forEach(item => {
-        addMessage(item.html, item.role, true, { time: item.time, error: item.error, raw: item.raw, skipSave: true });
+      const res = await fetch("/history", {
+        headers: { "Authorization": "Bearer " + accessToken },
       });
-    } catch (e) { /* ignore corrupt storage */ }
+      const data = await res.json();
+      if (!data.history) return;
+
+      data.history.forEach(item => {
+        if (item.role === "user") {
+          addMessage(item.content, "user", false, { skipEmptyCheck: true });
+        } else {
+          addMessage(marked.parse(item.content), "agent", true, { raw: item.content, skipEmptyCheck: true });
+        }
+      });
+    } catch (e) {
+      console.error("Couldn't load history:", e);
+    }
   }
 
   input.addEventListener("input", function () {
@@ -527,7 +533,6 @@
     Prism.highlightAllUnder(msgDiv);
     toggleEmptyState();
     scrollToBottom(true);
-    if (!opts.skipSave) saveHistory();
     return wrapper;
   }
 
@@ -581,7 +586,10 @@
     try {
       const res = await fetch("/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + accessToken,
+        },
         body: JSON.stringify({ message: text }),
       });
       const data = await res.json();
@@ -619,17 +627,26 @@
   });
 
   clearBtn.addEventListener("click", () => {
-    if (confirm("Futa (clear) your current session? This can't be undone.")) {
+    if (confirm("Clear this view? Your saved history stays in your account.")) {
       chat.innerHTML = "";
-      localStorage.removeItem(STORAGE_KEY);
       toggleEmptyState();
-      showToast("Session cleared");
+      showToast("View cleared");
     }
   });
 
-  loadHistory();
-  toggleEmptyState();
-  input.focus();
+  // ---------- Startup ----------
+  (async () => {
+    const { data } = await client.auth.getSession();
+    if (!data.session) {
+      window.location.href = "/login.html";
+      return;
+    }
+    accessToken = data.session.access_token;
+
+    await loadHistoryFromServer();
+    toggleEmptyState();
+    input.focus();
+  })();
 </script>
 </body>
 </html>
