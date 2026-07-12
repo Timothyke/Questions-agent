@@ -2,107 +2,220 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Log in — Skyline Agent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Log in — MainAI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
   :root {
-    --bg: #0e1414;
-    --panel: #151c1c;
-    --line: #26312f;
-    --text: #e8ede9;
-    --muted: #7f9490;
-    --accent: #4fd1a5;
+    --sand: #fbf1e2;
+    --sand-deep: #f3e3c9;
+    --cream: #fffaf0;
+    --bark: #3a2c20;
+    --bark-soft: #6b5a48;
+    --muted: #9c8a74;
+    --sunset: #ff8a3d;
+    --sunset-deep: #e85d2b;
+    --sun: #ffc857;
+    --acacia: #2f6b3f;
+    --leaf: #4f9e5c;
+    --leaf-dim: rgba(79,158,92,0.14);
+    --earth: #c4552f;
+    --earth-dim: rgba(196,85,47,0.12);
+    --line: #e9dcc2;
+    --danger: #d64545;
+    --danger-dim: #fdf1f1;
   }
-  * { box-sizing: border-box; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Segoe UI", system-ui, sans-serif;
-    height: 100vh;
+    background:
+      radial-gradient(900px 420px at 90% -8%, rgba(255,200,87,0.35), transparent 60%),
+      radial-gradient(700px 380px at 5% 0%, rgba(79,158,92,0.14), transparent 55%),
+      var(--sand);
+    color: var(--bark);
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .savanna-band {
+    position: relative;
+    height: 120px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, var(--sunset) 0%, var(--sunset-deep) 100%);
+    overflow: hidden;
+  }
+  .savanna-band svg { position: absolute; bottom: -2px; left: 0; width: 100%; height: 80px; }
+  .savanna-band .sun-glow {
+    position: absolute;
+    top: -30px; right: 15%;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--sun), transparent 70%);
+    opacity: 0.9;
+  }
+
+  main {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 30px 20px 60px;
+    margin-top: -50px;
   }
+
   .card {
-    background: var(--panel);
+    background: var(--cream);
     border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 32px;
+    border-radius: 22px;
+    padding: 36px 32px;
     width: 100%;
-    max-width: 360px;
+    max-width: 380px;
+    box-shadow: 0 20px 45px rgba(58,44,32,0.12);
   }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .logo-mark {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, var(--sun), var(--earth) 120%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    color: #3a1f0f;
+    flex-shrink: 0;
+    box-shadow: 0 3px 10px rgba(196,85,47,0.35);
+  }
+
   h1 {
-    font-size: 18px;
-    margin: 0 0 4px;
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--bark);
   }
+
   p.sub {
-    color: var(--muted);
-    font-size: 13px;
-    margin: 0 0 24px;
+    color: var(--bark-soft);
+    font-size: 14px;
+    margin-bottom: 26px;
+    line-height: 1.5;
   }
+
   label {
-    font-size: 13px;
-    color: var(--muted);
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--bark-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
     display: block;
     margin-bottom: 6px;
   }
+
   input {
     width: 100%;
-    background: #0e1414;
-    border: 1px solid var(--line);
-    color: var(--text);
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 16px;
+    background: var(--sand);
+    border: 1.5px solid var(--line);
+    color: var(--bark);
+    padding: 12px 14px;
+    border-radius: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 14.5px;
+    font-weight: 500;
+    margin-bottom: 18px;
     outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  input:focus { border-color: var(--accent); }
+  input::placeholder { color: var(--muted); }
+  input:focus {
+    border-color: var(--leaf);
+    box-shadow: 0 0 0 3px var(--leaf-dim);
+  }
+
   button {
     width: 100%;
-    background: var(--accent);
-    color: #06231a;
     border: none;
-    padding: 11px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
+    padding: 13px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 14.5px;
     cursor: pointer;
+    font-family: 'Baloo 2', sans-serif;
     margin-bottom: 10px;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
   }
-  button.secondary {
+  button:active { transform: scale(0.97); }
+
+  #login-btn {
+    background: linear-gradient(135deg, var(--leaf), var(--acacia));
+    color: #f5fff2;
+    box-shadow: 0 4px 12px rgba(47,107,63,0.28);
+  }
+  #login-btn:hover { box-shadow: 0 6px 16px rgba(47,107,63,0.35); transform: translateY(-1px); }
+
+  #signup-btn {
     background: transparent;
-    color: var(--accent);
-    border: 1px solid var(--accent);
+    color: var(--earth);
+    border: 1.5px solid var(--earth);
   }
+  #signup-btn:hover { background: var(--earth-dim); }
+
   #status {
     font-size: 13px;
-    color: var(--muted);
+    color: var(--bark-soft);
     min-height: 18px;
-    margin-top: 8px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.5;
   }
-  #status.error { color: #e07a7a; }
+  #status.error { color: var(--danger); }
 </style>
 </head>
 <body>
 
-<div class="card">
-  <h1>Skyline Agent</h1>
-  <p class="sub">Sign in or create an account</p>
-
-  <label for="email">Email</label>
-  <input id="email" type="email" autocomplete="email" />
-
-  <label for="password">Password</label>
-  <input id="password" type="password" autocomplete="current-password" />
-
-  <button id="login-btn">Log in</button>
-  <button id="signup-btn" class="secondary">Create account</button>
-
-  <div id="status"></div>
+<div class="savanna-band">
+  <div class="sun-glow"></div>
+  <svg viewBox="0 0 800 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,80 L0,55 Q40,40 80,50 T160,48 L160,80 Z" fill="rgba(58,44,32,0.55)"/>
+    <path d="M700,80 L700,50 Q720,20 726,50 Q735,15 742,50 Q750,25 758,50 L758,80 Z" fill="rgba(58,44,32,0.5)"/>
+    <path d="M600,80 L600,58 Q615,35 622,58 Q630,30 638,58 L638,80 Z" fill="rgba(58,44,32,0.4)"/>
+    <path d="M0,80 Q200,60 400,68 T800,62 L800,80 Z" fill="rgba(58,44,32,0.35)"/>
+  </svg>
 </div>
+
+<main>
+  <div class="card">
+    <div class="brand">
+      <div class="logo-mark">M</div>
+      <h1>MainAI</h1>
+    </div>
+    <p class="sub">Karibu — sign in or create an account to keep chatting where you left off.</p>
+
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+
+    <label for="password">Password</label>
+    <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+
+    <button id="login-btn">Log in</button>
+    <button id="signup-btn">Create account</button>
+
+    <div id="status"></div>
+  </div>
+</main>
 
 <script>
   const SUPABASE_URL = "https://nnbnvjbijoxazjugombn.supabase.co";
@@ -116,7 +229,6 @@
     statusEl.className = isError ? "error" : "";
   }
 
-  // If already logged in, skip straight to the chat
   client.auth.getSession().then(({ data }) => {
     if (data.session) window.location.href = "/index.html";
   });
