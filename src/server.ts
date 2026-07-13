@@ -20,6 +20,14 @@ const supabase = createClient(
   process.env.SUPABASE_ANON_KEY!
 );
 
+// Service role client bypasses RLS - safe here because we manually
+// verify the user's identity before using it, and this key never
+// reaches the browser.
+const supabaseAdmin = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+);
+
 const model = new ChatGoogleGenerativeAI({
   model: "gemini-flash-latest",
   apiKey: process.env.GOOGLE_API_KEY,
@@ -113,7 +121,7 @@ app.post("/chat", async (req, res) => {
         : JSON.stringify(lastMessage.content);
 
     console.log("Saving to Supabase for user:", userId);
-    const { error: insertError } = await supabase.from("conversations").insert([
+    const { error: insertError } = await supabaseAdmin.from("conversations").insert([
       { user_id: userId, role: "user", content: message },
       { user_id: userId, role: "assistant", content: replyText },
     ]);
