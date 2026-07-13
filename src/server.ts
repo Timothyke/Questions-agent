@@ -11,6 +11,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
+console.log("SUPABASE_URL loaded:", !!process.env.SUPABASE_URL);
+console.log("SUPABASE_ANON_KEY loaded:", !!process.env.SUPABASE_ANON_KEY);
+console.log("GOOGLE_API_KEY loaded:", !!process.env.GOOGLE_API_KEY);
+
 const supabase = createClient(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_ANON_KEY!
@@ -27,18 +31,22 @@ const agent = createReactAgent({
 });
 
 app.get("/history", async (req, res) => {
+  console.log("GET /history called");
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
+      console.log("No auth header on /history");
       return res.status(401).json({ error: "Not logged in." });
     }
     const token = authHeader.replace("Bearer ", "");
 
     const { data: userData, error: userError } = await supabase.auth.getUser(token);
     if (userError || !userData.user) {
+      console.log("Auth error on /history:", userError);
       return res.status(401).json({ error: "Invalid session, please log in again." });
     }
     const userId = userData.user.id;
+    console.log("Loading history for user:", userId);
 
     const { data: history, error } = await supabase
       .from("conversations")
@@ -46,35 +54,42 @@ app.get("/history", async (req, res) => {
       .eq("user_id", userId)
       .order("created_at", { ascending: true });
 
-    if (error) throw error;
+    if (error) {
+      console.log("Supabase select error:", error);
+      throw error;
+    }
 
+    console.log("History rows found:", history?.length ?? 0);
     res.json({ history: history || [] });
   } catch (err) {
-    console.error(err);
+    console.error("Caught error in /history:", err);
     res.status(500).json({ error: "Couldn't load history." });
   }
 });
 
 app.post("/chat", async (req, res) => {
+  console.log("POST /chat called with body:", req.body);
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
+      console.log("No auth header on /chat");
       return res.status(401).json({ error: "Not logged in." });
     }
     const token = authHeader.replace("Bearer ", "");
 
     const { data: userData, error: userError } = await supabase.auth.getUser(token);
     if (userError || !userData.user) {
+      console.log("Auth error on /chat:", userError);
       return res.status(401).json({ error: "Invalid session, please log in again." });
     }
     const userId = userData.user.id;
+    console.log("Chat request from user:", userId);
 
     const { message } = req.body;
     if (!message || typeof message !== "string") {
       return res.status(400).json({ error: "Message is required" });
     }
 
-    // Load this user's past conversation for context
     const { data: history } = await supabase
       .from("conversations")
       .select("role, content")
@@ -97,15 +112,21 @@ app.post("/chat", async (req, res) => {
         ? lastMessage.content
         : JSON.stringify(lastMessage.content);
 
-    // Save both sides of this exchange
-    await supabase.from("conversations").insert([
+    console.log("Saving to Supabase for user:", userId);
+    const { error: insertError } = await supabase.from("conversations").insert([
       { user_id: userId, role: "user", content: message },
       { user_id: userId, role: "assistant", content: replyText },
     ]);
 
+    if (insertError) {
+      console.log("Supabase insert error:", insertError);
+    } else {
+      console.log("Successfully saved conversation.");
+    }
+
     res.json({ reply: replyText });
   } catch (err) {
-    console.error(err);
+    console.error("Caught error in /chat:", err);
     res.status(500).json({ error: "Something went wrong on the server." });
   }
 });
