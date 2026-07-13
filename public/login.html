@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Log in — MainAI</title>
+<title>Log in - MainAI</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -11,104 +11,102 @@
 
 <style>
   :root {
-    --sand: #fbf1e2;
-    --sand-deep: #f3e3c9;
-    --cream: #fffaf0;
-    --bark: #3a2c20;
-    --bark-soft: #6b5a48;
-    --muted: #9c8a74;
-    --sunset: #ff8a3d;
-    --sunset-deep: #e85d2b;
-    --sun: #ffc857;
-    --acacia: #2f6b3f;
-    --leaf: #4f9e5c;
-    --leaf-dim: rgba(79,158,92,0.14);
-    --earth: #c4552f;
-    --earth-dim: rgba(196,85,47,0.12);
-    --line: #e9dcc2;
-    --danger: #d64545;
-    --danger-dim: #fdf1f1;
+    --canopy: #0f1f16;
+    --canopy-deep: #0a1610;
+    --bark: #4a3728;
+    --bark-light: #6b5240;
+    --moss: #4f7942;
+    --moss-bright: #6fa459;
+    --moss-dim: rgba(111,164,89,0.16);
+    --fern: #2e5233;
+    --amber: #e8b84b;
+    --amber-dim: rgba(232,184,75,0.15);
+    --cream: #f4ede0;
+    --cream-soft: #cfc4ae;
+    --line: #2a3f2c;
+    --danger: #e0705c;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     background:
-      radial-gradient(900px 420px at 90% -8%, rgba(255,200,87,0.35), transparent 60%),
-      radial-gradient(700px 380px at 5% 0%, rgba(79,158,92,0.14), transparent 55%),
-      var(--sand);
-    color: var(--bark);
+      radial-gradient(1000px 500px at 15% -10%, rgba(232,184,75,0.10), transparent 55%),
+      radial-gradient(800px 500px at 85% 100%, rgba(79,121,66,0.20), transparent 60%),
+      linear-gradient(180deg, var(--canopy) 0%, var(--canopy-deep) 100%);
+    color: var(--cream);
     font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-  }
-
-  .savanna-band {
-    position: relative;
-    height: 120px;
-    flex-shrink: 0;
-    background: linear-gradient(180deg, var(--sunset) 0%, var(--sunset-deep) 100%);
-    overflow: hidden;
-  }
-  .savanna-band svg { position: absolute; bottom: -2px; left: 0; width: 100%; height: 80px; }
-  .savanna-band .sun-glow {
-    position: absolute;
-    top: -30px; right: 15%;
-    width: 110px; height: 110px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--sun), transparent 70%);
-    opacity: 0.9;
-  }
-
-  main {
-    flex: 1;
-    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 30px 20px 60px;
-    margin-top: -50px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Soft leaf-shaped shapes drifting in the background */
+  body::before, body::after {
+    content: "";
+    position: absolute;
+    border-radius: 50% 0 50% 50%;
+    opacity: 0.12;
+    filter: blur(2px);
+  }
+  body::before {
+    width: 260px; height: 260px;
+    background: var(--moss-bright);
+    top: -60px; left: -60px;
+    transform: rotate(25deg);
+  }
+  body::after {
+    width: 200px; height: 200px;
+    background: var(--amber);
+    bottom: -50px; right: -40px;
+    transform: rotate(-35deg);
   }
 
   .card {
-    background: var(--cream);
+    position: relative;
+    background: rgba(20, 35, 24, 0.85);
+    backdrop-filter: blur(6px);
     border: 1px solid var(--line);
     border-radius: 22px;
     padding: 36px 32px;
     width: 100%;
     max-width: 380px;
-    box-shadow: 0 20px 45px rgba(58,44,32,0.12);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
   }
 
   .brand {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 24px;
+    margin-bottom: 22px;
   }
 
   .logo-mark {
     width: 42px; height: 42px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 32% 28%, var(--sun), var(--earth) 120%);
+    border-radius: 50% 0 50% 50%;
+    background: linear-gradient(135deg, var(--moss-bright), var(--fern));
     display: flex; align-items: center; justify-content: center;
     font-family: 'Baloo 2', sans-serif;
     font-weight: 700;
     font-size: 19px;
-    color: #3a1f0f;
+    color: var(--canopy-deep);
     flex-shrink: 0;
-    box-shadow: 0 3px 10px rgba(196,85,47,0.35);
+    box-shadow: 0 3px 12px rgba(79,121,66,0.45);
   }
 
   h1 {
     font-family: 'Baloo 2', sans-serif;
     font-size: 20px;
     font-weight: 700;
-    color: var(--bark);
+    color: var(--cream);
   }
 
   p.sub {
-    color: var(--bark-soft);
+    color: var(--cream-soft);
     font-size: 14px;
     margin-bottom: 26px;
     line-height: 1.5;
@@ -117,18 +115,18 @@
   label {
     font-size: 12.5px;
     font-weight: 700;
-    color: var(--bark-soft);
+    color: var(--moss-bright);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     display: block;
     margin-bottom: 6px;
   }
 
   input {
     width: 100%;
-    background: var(--sand);
+    background: rgba(10, 22, 16, 0.6);
     border: 1.5px solid var(--line);
-    color: var(--bark);
+    color: var(--cream);
     padding: 12px 14px;
     border-radius: 12px;
     font-family: 'Nunito', sans-serif;
@@ -138,10 +136,10 @@
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s;
   }
-  input::placeholder { color: var(--muted); }
+  input::placeholder { color: var(--cream-soft); opacity: 0.5; }
   input:focus {
-    border-color: var(--leaf);
-    box-shadow: 0 0 0 3px var(--leaf-dim);
+    border-color: var(--moss-bright);
+    box-shadow: 0 0 0 3px var(--moss-dim);
   }
 
   button {
@@ -159,22 +157,22 @@
   button:active { transform: scale(0.97); }
 
   #login-btn {
-    background: linear-gradient(135deg, var(--leaf), var(--acacia));
+    background: linear-gradient(135deg, var(--moss-bright), var(--fern));
     color: #f5fff2;
-    box-shadow: 0 4px 12px rgba(47,107,63,0.28);
+    box-shadow: 0 4px 14px rgba(79,121,66,0.35);
   }
-  #login-btn:hover { box-shadow: 0 6px 16px rgba(47,107,63,0.35); transform: translateY(-1px); }
+  #login-btn:hover { box-shadow: 0 6px 18px rgba(79,121,66,0.45); transform: translateY(-1px); }
 
   #signup-btn {
     background: transparent;
-    color: var(--earth);
-    border: 1.5px solid var(--earth);
+    color: var(--amber);
+    border: 1.5px solid var(--amber);
   }
-  #signup-btn:hover { background: var(--earth-dim); }
+  #signup-btn:hover { background: var(--amber-dim); }
 
   #status {
     font-size: 13px;
-    color: var(--bark-soft);
+    color: var(--cream-soft);
     min-height: 18px;
     margin-top: 10px;
     text-align: center;
@@ -186,36 +184,24 @@
 </head>
 <body>
 
-<div class="savanna-band">
-  <div class="sun-glow"></div>
-  <svg viewBox="0 0 800 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M0,80 L0,55 Q40,40 80,50 T160,48 L160,80 Z" fill="rgba(58,44,32,0.55)"/>
-    <path d="M700,80 L700,50 Q720,20 726,50 Q735,15 742,50 Q750,25 758,50 L758,80 Z" fill="rgba(58,44,32,0.5)"/>
-    <path d="M600,80 L600,58 Q615,35 622,58 Q630,30 638,58 L638,80 Z" fill="rgba(58,44,32,0.4)"/>
-    <path d="M0,80 Q200,60 400,68 T800,62 L800,80 Z" fill="rgba(58,44,32,0.35)"/>
-  </svg>
-</div>
-
-<main>
-  <div class="card">
-    <div class="brand">
-      <div class="logo-mark">M</div>
-      <h1>MainAI</h1>
-    </div>
-    <p class="sub">Karibu — sign in or create an account to keep chatting where you left off.</p>
-
-    <label for="email">Email</label>
-    <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
-
-    <label for="password">Password</label>
-    <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
-
-    <button id="login-btn">Log in</button>
-    <button id="signup-btn">Create account</button>
-
-    <div id="status"></div>
+<div class="card">
+  <div class="brand">
+    <div class="logo-mark">M</div>
+    <h1>MainAI</h1>
   </div>
-</main>
+  <p class="sub">Karibu - sign in or create an account to keep chatting where you left off.</p>
+
+  <label for="email">Email</label>
+  <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+
+  <label for="password">Password</label>
+  <input id="password" type="password" placeholder="••••••••" autocomplete="current-password" />
+
+  <button id="login-btn">Log in</button>
+  <button id="signup-btn">Create account</button>
+
+  <div id="status"></div>
+</div>
 
 <script>
   const SUPABASE_URL = "https://nnbnvjbijoxazjugombn.supabase.co";
